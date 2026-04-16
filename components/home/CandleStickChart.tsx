@@ -24,7 +24,6 @@ const CandleStickChart = ({
   initialPeriod = "daily",
 }: CandlestickChartProps) => {
   const [period, setPeriod] = useState<Period>(initialPeriod);
-  const [loading, setLoading] = useState(false);
   const chartContainerRef = useRef<HTMLDivElement | null>(null);
   const chartRef = useRef<IChartApi | null>(null);
   const candleSeriesRef = useRef<ISeriesApi<"Candlestick"> | null>(null);
@@ -97,7 +96,6 @@ const CandleStickChart = ({
   }, [ohlcData, period]);
 
   const fetchOHLCData = async (newPeriod: Period) => {
-    setLoading(true);
     try {
       const config = PERIOD_CONFIG[newPeriod];
       const response = await fetcher<OHLCData[]>(`coins/${coinId}/ohlc`, {
@@ -109,8 +107,6 @@ const CandleStickChart = ({
       setOhlcData(response ?? []);
     } catch (error) {
       console.error("Error fetching OHLC data ", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -134,7 +130,7 @@ const CandleStickChart = ({
         <span className="text-sm text-gray-500 font-medium mx-2">Period</span>
         {PERIOD_BUTTONS.map((button) => (
           <button
-            disabled={loading}
+            disabled={isPending}
             key={button.value}
             className={
               button.value === period ? "config-button-active" : "config-button"
