@@ -1,3 +1,23 @@
-export default function Home() {
-  return <div className="text-indigo-500 text-4xl font-bold"></div>;
+import { Suspense } from "react";
+import CoinOverview from "../components/home/CoinOverview";
+import TrendingCoins from "../components/home/TrendingCoins";
+import { CoinsOverviewFallback, TrendingCoinsFallback } from "./fallback";
+
+export default async function Home() {
+  return (
+    <main className="main-container">
+      <section className="home-grid">
+        <Suspense fallback={<CoinsOverviewFallback />}>
+          <CoinOverview />
+        </Suspense>
+        <Suspense fallback={<TrendingCoinsFallback />}>
+          <TrendingCoins />
+        </Suspense>
+      </section>
+
+      <section className="w-full mt-7 space-y-4">
+        <p>Categories</p>
+      </section>
+    </main>
+  );
 }
