@@ -48,8 +48,19 @@ const CandleStickChart = ({
       getCandlestickConfig(),
     );
 
+    // convert the data to seconds
+    const convertedToSeconds: OHLCData[] = ohlcData.map((d) => [
+      d[0] / 1000,
+      d[1], // open
+      d[2], // high
+      d[3], // low
+      d[4], // close
+    ]);
+    // convert the data to the format expected by the chart
+    const convertedData = convertOHLCData(convertedToSeconds);
+
     // set the data to the candle series
-    candleSeries.setData(convertOHLCData(ohlcData));
+    candleSeries.setData(convertedData);
 
     // to fit the chart to the container
     chart.timeScale().fitContent();
