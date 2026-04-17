@@ -12,7 +12,6 @@ const AllCoins = async ({
   const raw = resolved.page;
   const pageStr = Array.isArray(raw) ? raw[0] : raw;
   const parsed = pageStr != null ? parseInt(String(pageStr), 10) : NaN;
-  console.log(resolved, raw, pageStr, parsed);
   const currentPage = Number.isFinite(parsed) && parsed >= 1 ? parsed : 1;
 
   let coins: CoinMarketData[];
@@ -62,7 +61,8 @@ const AllCoins = async ({
       header: "24h Change",
       cellClassName: "change-header-cell",
       cell: (coin) => {
-        const isTrendingUp = coin.price_change_percentage_24h > 0;
+        const priceChange = coin?.price_change_percentage_24h?.toFixed(2) ?? 0;
+        const isTrendingUp = +priceChange > 0;
 
         return (
           <div
@@ -71,7 +71,7 @@ const AllCoins = async ({
               isTrendingUp ? "text-green-500" : "text-red-500",
             )}
           >
-            <p>{coin?.price_change_percentage_24h?.toFixed(2) ?? 0}%</p>
+            <p>{Math.abs(+priceChange)}%</p>
           </div>
         );
       },
@@ -79,8 +79,10 @@ const AllCoins = async ({
     {
       header: "Market Cap",
       cellClassName: "market-cap-cell",
-      cell: (category) =>
-        formatCurrency(+category?.market_cap?.toFixed(2) ?? 0),
+      cell: (coin) => {
+        const marketCap = coin?.market_cap?.toFixed(2) ?? 0;
+        return formatCurrency(+marketCap);
+      },
     },
   ];
 

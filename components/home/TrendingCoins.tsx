@@ -5,7 +5,7 @@ import { TrendingDown, TrendingUp } from "lucide-react";
 import { TrendingCoinsFallback } from "@/app/fallback";
 import { fetcher } from "../../lib/coingecko.actions";
 import DataTable from "../DataTable";
-import { cn } from "../../lib/utils";
+import { cn, formatCurrency } from "../../lib/utils";
 
 const trendingColumns: DataTableColumn<TrendingCoin>[] = [
   {
@@ -24,10 +24,12 @@ const trendingColumns: DataTableColumn<TrendingCoin>[] = [
   },
   {
     header: "24h Change",
-    cellClassName: "24h-change-cell",
+    cellClassName: "change-cell",
     cell: (coin) => {
       const item = coin.item;
-      const isTrendingUp = item.data.price_change_percentage_24h.usd > 0;
+      const priceChange =
+        item.data.price_change_percentage_24h.usd.toFixed(2) ?? 0;
+      const isTrendingUp = +priceChange > 0;
 
       return (
         <div
@@ -43,9 +45,7 @@ const trendingColumns: DataTableColumn<TrendingCoin>[] = [
               <TrendingDown width={16} height={16} />
             )}
           </p>
-          <p>
-            {Math.abs(item.data.price_change_percentage_24h.usd).toFixed(2)}%
-          </p>
+          <p>{Math.abs(+priceChange)}%</p>
         </div>
       );
     },
@@ -55,7 +55,8 @@ const trendingColumns: DataTableColumn<TrendingCoin>[] = [
     cellClassName: "price-cell",
     cell: (coin) => {
       const item = coin.item;
-      return item.data.price.toFixed(2);
+      const price = item.data.price.toFixed(2) ?? 0;
+      return formatCurrency(+price);
     },
   },
 ];

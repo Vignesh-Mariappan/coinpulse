@@ -67,7 +67,7 @@ const CoinsPagination = ({
                 handlePageChange(currentPage + 1);
               }
             }}
-            className={cn(isLastPage ? "control-button" : "control-disabled")}
+            className={cn(!isLastPage ? "control-button" : "control-disabled")}
           />
         </PaginationItem>
       </PaginationContent>

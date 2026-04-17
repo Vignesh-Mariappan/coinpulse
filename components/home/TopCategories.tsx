@@ -33,6 +33,8 @@ const TopCategories = async () => {
       cellClassName: "change-header-cell",
       cell: (category) => {
         const isTrendingUp = category.market_cap_change_24h > 0;
+        const marketCapChange =
+          category?.market_cap_change_24h?.toFixed(2) ?? 0;
 
         return (
           <div
@@ -48,7 +50,7 @@ const TopCategories = async () => {
                 <TrendingDown width={16} height={16} />
               )}
             </p>
-            <p>{Math.abs(category.market_cap_change_24h).toFixed(2)}%</p>
+            <p>{Math.abs(+marketCapChange)}%</p>
           </div>
         );
       },
@@ -56,12 +58,18 @@ const TopCategories = async () => {
     {
       header: "Market Cap",
       cellClassName: "market-cap-cell",
-      cell: (category) => formatCurrency(+category.market_cap.toFixed(2)),
+      cell: (category) => {
+        const marketCap = category?.market_cap?.toFixed(2) ?? 0;
+        return formatCurrency(+marketCap);
+      },
     },
     {
       header: "24h Volume",
       cellClassName: "volume-cell",
-      cell: (category) => formatCurrency(+category.volume_24h.toFixed(2)),
+      cell: (category) => {
+        const volume = category?.volume_24h?.toFixed(2) ?? 0;
+        return formatCurrency(+volume);
+      },
     },
   ];
 
