@@ -24,7 +24,7 @@ const trendingColumns: DataTableColumn<TrendingCoin>[] = [
   },
   {
     header: "24h Change",
-    cellClassName: "name-cell",
+    cellClassName: "24h-change-cell",
     cell: (coin) => {
       const item = coin.item;
       const isTrendingUp = item.data.price_change_percentage_24h.usd > 0;

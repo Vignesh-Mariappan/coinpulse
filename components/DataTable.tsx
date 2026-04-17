@@ -25,11 +25,10 @@ const DataTable = <T,>({
   return (
     <Table
       className={cn(
-        "custom-scrollbar rounded-lg overflow-hidden",
+        "custom-scrollbar rounded-lg overflow-hidden my-4",
         tableClassName,
       )}
     >
-      <TableCaption>A list of your recent invoices.</TableCaption>
       <TableHeader className={headerClassName}>
         <TableRow className={cn("hover:bg-transparent!", headerRowClassName)}>
           {columns.map((col, colIdx) => (
@@ -38,6 +37,7 @@ const DataTable = <T,>({
               className={cn(
                 "bg-dark-400 text-purple-100 py-4 first:pl-5 last:pr-5",
                 headerCellClassName,
+                col.headClassName,
               )}
             >
               {col.header}
@@ -57,7 +57,11 @@ const DataTable = <T,>({
             {columns.map((col, colIdx) => (
               <TableCell
                 key={colIdx}
-                className={cn("py-4 first:pl-5 last:pr-5", bodyCellClassName)}
+                className={cn(
+                  "py-4 first:pl-5 last:pr-5",
+                  bodyCellClassName,
+                  col.cellClassName,
+                )}
               >
                 {col.cell(row, rowIdx)}
               </TableCell>
